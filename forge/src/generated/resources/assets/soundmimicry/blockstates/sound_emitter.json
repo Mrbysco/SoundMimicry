@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "mimicing=false,powered=false": {
+      "model": "soundmimicry:block/sound_emitter"
+    },
+    "mimicing=false,powered=true": {
+      "model": "soundmimicry:block/sound_emitter"
+    },
+    "mimicing=true,powered=false": {
+      "model": "soundmimicry:block/sound_emitter"
+    },
+    "mimicing=true,powered=true": {
+      "model": "soundmimicry:block/sound_emitter"
+    }
+  }
+}
