@@ -48,7 +48,6 @@ public class SoundEmitterBlockEntity extends BlockEntity {
 		if (!this.level.isClientSide()) {
 			MinecraftServer server = level.getServer();
 			constructCommand();
-			System.out.println(soundCommand);
 			if (!StringUtil.isNullOrEmpty(soundCommand)) {
 				try {
 					CommandSourceStack commandsourcestack = server.createCommandSourceStack()
@@ -106,6 +105,12 @@ public class SoundEmitterBlockEntity extends BlockEntity {
 	}
 
 	public void constructCommand() {
+		// If any of the required fields are empty, don't construct the command
+		if (StringUtil.isNullOrEmpty(soundLocation) || StringUtil.isNullOrEmpty(soundSource) || StringUtil.isNullOrEmpty(offset) || StringUtil.isNullOrEmpty(volume) || StringUtil.isNullOrEmpty(pitch) || StringUtil.isNullOrEmpty(minVolume)) {
+			this.soundCommand = "";
+			return;
+		}
+
 		//Construct command string
 		StringBuilder commandBuilder = new StringBuilder("playsound");
 		//Add the sound location to the command

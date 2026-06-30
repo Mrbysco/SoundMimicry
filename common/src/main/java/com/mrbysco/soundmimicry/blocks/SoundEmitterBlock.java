@@ -4,14 +4,17 @@ import com.mojang.serialization.MapCodec;
 import com.mrbysco.soundmimicry.blocks.entity.SoundEmitterBlockEntity;
 import com.mrbysco.soundmimicry.registration.MimicryRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,17 +22,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class SoundEmitterBlock extends BaseEntityBlock {
 	public static final MapCodec<SoundEmitterBlock> CODEC = simpleCodec(SoundEmitterBlock::new);
+	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	public static final BooleanProperty MIMICING = BooleanProperty.create("mimicing");
 
 	public SoundEmitterBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, Boolean.FALSE).setValue(MIMICING, Boolean.FALSE));
+		this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, Boolean.FALSE).setValue(FACING, Direction.NORTH));
 	}
 
 	@Override
@@ -52,7 +56,6 @@ public class SoundEmitterBlock extends BaseEntityBlock {
 		return super.useWithoutItem(state, level, pos, player, hitResult);
 	}
 
-
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new SoundEmitterBlockEntity(pos, state);
@@ -68,21 +71,18 @@ public class SoundEmitterBlock extends BaseEntityBlock {
 
 	@Override
 	public RenderShape getRenderShape(BlockState state) {
-		if (state.getValue(MIMICING)) {
-			return RenderShape.INVISIBLE;
-		}
 		return RenderShape.MODEL;
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		boolean flag = level.hasNeighborSignal(pos);
-		if (flag != (Boolean) state.getValue(POWERED)) {
+		if (flag != state.getValue(POWERED)) {
 			if (flag) {
 				this.playSound(level, pos);
 			}
 
-			level.setBlock(pos, (BlockState) state.setValue(POWERED, flag), 3);
+			level.setBlock(pos, state.setValue(POWERED, flag), 3);
 		}
 	}
 
@@ -100,7 +100,17 @@ public class SoundEmitterBlock extends BaseEntityBlock {
 	}
 
 	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+	}
+
+	@Override
+	protected BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+	}
+
+	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> blockStateBuilder) {
-		blockStateBuilder.add(POWERED, MIMICING);
+		blockStateBuilder.add(POWERED, FACING);
 	}
 }

@@ -1,0 +1,17 @@
+{
+  "block.soundmimicry.sound_emitter": "Sound Emitter",
+  "soundmimicry.minVolume": "Min Volume",
+  "soundmimicry.minVolume.tooltip": "The minimum volume of the sound",
+  "soundmimicry.networking.set_sound_data.failed": "Failed to set Sound Emitter data %s",
+  "soundmimicry.offset": "Offset",
+  "soundmimicry.offset.tooltip": "The offset of the sound from the emitter's position",
+  "soundmimicry.pitch": "Pitch",
+  "soundmimicry.pitch.tooltip": "The pitch of the sound",
+  "soundmimicry.setSound": "Set Sound",
+  "soundmimicry.sound": "Sound Identifier",
+  "soundmimicry.sound.tooltip": "The ID of the sound",
+  "soundmimicry.soundSource": "Sound Source",
+  "soundmimicry.soundSource.tooltip": "The source type of the sound",
+  "soundmimicry.volume": "Volume",
+  "soundmimicry.volume.tooltip": "The volume of the sound"
+}

@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "soundmimicry:sound_emitter",
+      "required": false
+    }
+  ]
+}

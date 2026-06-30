@@ -5,21 +5,21 @@
       "y": 90
     },
     "facing=east,powered=true": {
-      "model": "soundmimicry:block/sound_emitter_on",
+      "model": "soundmimicry:block/sound_emitter_powered",
       "y": 90
     },
     "facing=north,powered=false": {
       "model": "soundmimicry:block/sound_emitter"
     },
     "facing=north,powered=true": {
-      "model": "soundmimicry:block/sound_emitter_on"
+      "model": "soundmimicry:block/sound_emitter_powered"
     },
     "facing=south,powered=false": {
       "model": "soundmimicry:block/sound_emitter",
       "y": 180
     },
     "facing=south,powered=true": {
-      "model": "soundmimicry:block/sound_emitter_on",
+      "model": "soundmimicry:block/sound_emitter_powered",
       "y": 180
     },
     "facing=west,powered=false": {
@@ -27,7 +27,7 @@
       "y": 270
     },
     "facing=west,powered=true": {
-      "model": "soundmimicry:block/sound_emitter_on",
+      "model": "soundmimicry:block/sound_emitter_powered",
       "y": 270
     }
   }
