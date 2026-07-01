@@ -123,6 +123,7 @@ public abstract class AbstractSoundEmitterEditScreen extends Screen {
 		};
 		this.volumeEdit.setMaxLength(3);
 		this.volumeEdit.setValue("0");
+		this.volumeEdit.setMinValue(0.0F);
 		this.volumeEdit.setTooltip(Tooltip.create(Component.translatable("soundmimicry.volume.tooltip")));
 		this.addRenderableWidget(this.volumeEdit);
 
@@ -131,6 +132,7 @@ public abstract class AbstractSoundEmitterEditScreen extends Screen {
 				Component.translatable("soundmimicry.pitch"), 0) {
 		};
 		this.pitchEdit.setMaxLength(3);
+		this.pitchEdit.setMinValue(0.0F);
 		this.pitchEdit.setMaxValue(2.0F);
 		this.pitchEdit.setValue("0");
 		this.pitchEdit.setTooltip(Tooltip.create(Component.translatable("soundmimicry.pitch.tooltip")));
@@ -141,6 +143,7 @@ public abstract class AbstractSoundEmitterEditScreen extends Screen {
 				Component.translatable("soundmimicry.minVolume"), 0) {
 		};
 		this.minVolumeEdit.setMaxLength(3);
+		this.minVolumeEdit.setMinValue(0.0F);
 		this.minVolumeEdit.setMaxValue(1.0F);
 		this.minVolumeEdit.setValue("0");
 		this.minVolumeEdit.setTooltip(Tooltip.create(Component.translatable("soundmimicry.minVolume.tooltip")));

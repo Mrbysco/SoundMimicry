@@ -7,12 +7,17 @@ import net.minecraft.util.Mth;
 
 public class NumberEditBox extends EditBox {
 	public final int decimalPoints;
-	public float maxValue;
+	public Float minValue, maxValue;
 
 	public NumberEditBox(Font font, int x, int y, int width, int height, Component defaultValue, int decimalPoints) {
 		super(font, x, y, width, height, defaultValue);
 		this.decimalPoints = decimalPoints;
-		this.maxValue = -1;
+		this.minValue = null;
+		this.maxValue = null;
+	}
+
+	public void setMinValue(float minValue) {
+		this.minValue = minValue;
 	}
 
 	public void setMaxValue(float maxValue) {
@@ -42,11 +47,12 @@ public class NumberEditBox extends EditBox {
 		} else {
 			try {
 				float parsedValue = Float.parseFloat(value);
-				if (maxValue != -1) {
-					System.out.println("Old value: " + parsedValue);
-					System.out.println("Max: " + maxValue);
-					parsedValue = Mth.clamp(parsedValue, 0.0F, maxValue);
-					System.out.println("New value: " + parsedValue);
+				if (minValue != null || maxValue != null) {
+					parsedValue = Mth.clamp(
+							parsedValue,
+							minValue != null ? minValue : Float.MIN_VALUE,
+							maxValue != null ? maxValue : Float.MAX_VALUE
+					);
 				}
 				super.setValue(String.format(("%." + decimalPoints + "f"), parsedValue));
 			} catch (NumberFormatException e) {
