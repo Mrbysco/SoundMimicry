@@ -21,17 +21,14 @@ public class MimicryRecipeProvider extends RecipeProvider {
 	@Override
 	protected void buildRecipes(RecipeOutput recipeOutput) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, MimicryRegistry.SOUND_EMITTER.get())
-				.pattern("CCC")
-				.pattern("RVR")
-				.pattern("GCG")
-				.define('C', ItemTags.LEAVES)
+				.pattern("SSS")
+				.pattern("RNR")
+				.pattern("GSG")
+				.define('S', Items.AMETHYST_SHARD)
 				.define('R', Tags.Items.DUSTS_REDSTONE)
-				.define('V', Items.NOTE_BLOCK)
+				.define('N', Items.NOTE_BLOCK)
 				.define('G', Tags.Items.DUSTS_GLOWSTONE)
-				.unlockedBy("has_leaves", has(ItemTags.LEAVES))
 				.unlockedBy("has_noteblock", has(Items.NOTE_BLOCK))
-				.unlockedBy("has_redstone_dust", has(Tags.Items.DUSTS_REDSTONE))
-				.unlockedBy("has_glowstone_dust", has(Tags.Items.DUSTS_GLOWSTONE))
 				.save(recipeOutput);
 	}
 }

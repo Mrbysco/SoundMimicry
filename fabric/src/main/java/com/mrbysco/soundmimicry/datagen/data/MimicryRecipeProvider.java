@@ -8,7 +8,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,17 +20,14 @@ public class MimicryRecipeProvider extends FabricRecipeProvider {
 	@Override
 	public void buildRecipes(RecipeOutput recipeOutput) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, MimicryRegistry.SOUND_EMITTER.get())
-				.pattern("CCC")
-				.pattern("RVR")
-				.pattern("GCG")
-				.define('C', ItemTags.LEAVES)
+				.pattern("SSS")
+				.pattern("RNR")
+				.pattern("GSG")
+				.define('S', Items.AMETHYST_SHARD)
 				.define('R', ConventionalItemTags.REDSTONE_DUSTS)
-				.define('V', Items.NOTE_BLOCK)
+				.define('N', Items.NOTE_BLOCK)
 				.define('G', ConventionalItemTags.GLOWSTONE_DUSTS)
-				.unlockedBy("has_leaves", has(ItemTags.LEAVES))
 				.unlockedBy("has_noteblock", has(Items.NOTE_BLOCK))
-				.unlockedBy("has_redstone_dust", has(ConventionalItemTags.REDSTONE_DUSTS))
-				.unlockedBy("has_glowstone_dust", has(ConventionalItemTags.GLOWSTONE_DUSTS))
 				.save(recipeOutput);
 	}
 }

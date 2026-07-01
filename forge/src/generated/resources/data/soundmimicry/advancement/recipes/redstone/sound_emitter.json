@@ -1,41 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_glowstone_dust": {
-      "conditions": {
-        "items": [
-          {
-            "items": "#c:dusts/glowstone"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_leaves": {
-      "conditions": {
-        "items": [
-          {
-            "items": "#minecraft:leaves"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_noteblock": {
       "conditions": {
         "items": [
           {
             "items": "minecraft:note_block"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_redstone_dust": {
-      "conditions": {
-        "items": [
-          {
-            "items": "#c:dusts/redstone"
           }
         ]
       },
@@ -51,10 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_leaves",
-      "has_noteblock",
-      "has_redstone_dust",
-      "has_glowstone_dust"
+      "has_noteblock"
     ]
   ],
   "rewards": {

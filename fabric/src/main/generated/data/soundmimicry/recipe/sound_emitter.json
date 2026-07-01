@@ -2,23 +2,23 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "C": {
-      "tag": "minecraft:leaves"
-    },
     "G": {
       "tag": "c:dusts/glowstone"
+    },
+    "N": {
+      "item": "minecraft:note_block"
     },
     "R": {
       "tag": "c:dusts/redstone"
     },
-    "V": {
-      "item": "minecraft:note_block"
+    "S": {
+      "item": "minecraft:amethyst_shard"
     }
   },
   "pattern": [
-    "CCC",
-    "RVR",
-    "GCG"
+    "SSS",
+    "RNR",
+    "GSG"
   ],
   "result": {
     "count": 1,
