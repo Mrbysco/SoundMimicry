@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "G": {
-      "tag": "c:dusts/glowstone"
-    },
-    "N": {
-      "item": "minecraft:note_block"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    },
-    "S": {
-      "item": "minecraft:amethyst_shard"
-    }
+    "G": "#c:dusts/glowstone",
+    "N": "minecraft:note_block",
+    "R": "#c:dusts/redstone",
+    "S": "minecraft:amethyst_shard"
   },
   "pattern": [
     "SSS",
@@ -21,7 +13,6 @@
     "GSG"
   ],
   "result": {
-    "count": 1,
     "id": "soundmimicry:sound_emitter"
   }
 }

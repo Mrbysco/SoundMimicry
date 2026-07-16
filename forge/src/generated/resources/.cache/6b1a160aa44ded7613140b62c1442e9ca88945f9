@@ -1,0 +1,5 @@
+// 26.1.2	2026-07-16T23:41:06.9043714	Model Definitions - soundmimicry
+b4f01a43a205a15e9cc1e50137e5f45c85622c52 assets/soundmimicry/blockstates/sound_emitter.json
+9a27825b1602a58d5e7871f838afd9c6a90422a0 assets/soundmimicry/items/sound_emitter.json
+5f808e0ae5531f03ff69782dfa6415c405581e2c assets/soundmimicry/models/block/sound_emitter.json
+b1561dcb77bf9954c49096cd9628ebdace5b10ca assets/soundmimicry/models/block/sound_emitter_powered.json

@@ -5,15 +5,17 @@ import com.mrbysco.soundmimicry.client.screen.components.SoundSourceSuggestions;
 import com.mrbysco.soundmimicry.client.screen.components.SoundSuggestions;
 import com.mrbysco.soundmimicry.client.screen.widget.NumberEditBox;
 import net.minecraft.client.GameNarrator;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractSoundEmitterEditScreen extends Screen {
@@ -185,8 +187,8 @@ public abstract class AbstractSoundEmitterEditScreen extends Screen {
 	}
 
 	@Override
-	public void resize(Minecraft mc, int width, int height) {
-		this.init(mc, width, height);
+	public void resize(int width, int height) {
+		this.init(width, height);
 		this.soundLocationEdit.setValue(this.soundLocationEdit.getValue());
 		this.soundSuggestions.updateCommandInfo();
 		this.soundSourceEdit.setValue(this.soundSourceEdit.getValue());
@@ -226,16 +228,16 @@ public abstract class AbstractSoundEmitterEditScreen extends Screen {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (soundLocationEdit.isFocused() && this.soundSuggestions.keyPressed(keyCode, scanCode, modifiers)) {
+	public boolean keyPressed(KeyEvent event) {
+		if (soundLocationEdit.isFocused() && this.soundSuggestions.keyPressed(event)) {
 			return true;
-		} else if (offsetEdit.isFocused() && this.offsetSuggestions.keyPressed(keyCode, scanCode, modifiers)) {
+		} else if (offsetEdit.isFocused() && this.offsetSuggestions.keyPressed(event)) {
 			return true;
-		} else if (soundSourceEdit.isFocused() && this.soundSourceSuggestions.keyPressed(keyCode, scanCode, modifiers)) {
+		} else if (soundSourceEdit.isFocused() && this.soundSourceSuggestions.keyPressed(event)) {
 			return true;
-		} else if (super.keyPressed(keyCode, scanCode, modifiers)) {
+		} else if (super.keyPressed(event)) {
 			return true;
-		} else if (keyCode != 257 && keyCode != 335) {
+		} else if (event.key() != 257 && event.key() != 335) {
 			return false;
 		} else {
 			this.onDone();
@@ -256,23 +258,27 @@ public abstract class AbstractSoundEmitterEditScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int delta) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (super.mouseClicked(event, doubleClick)) {
+			return true;
+		}
+
 		// The ugly setFocused calls are to stop multiple edit boxes from being focused at once
-		if (soundLocationEdit.isFocused() && this.soundSuggestions.mouseClicked(mouseX, mouseY, delta)) {
+		if (soundLocationEdit.isFocused() && this.soundSuggestions.mouseClicked(event)) {
 			offsetEdit.setFocused(false);
 			soundSourceEdit.setFocused(false);
 			volumeEdit.setFocused(false);
 			pitchEdit.setFocused(false);
 			minVolumeEdit.setFocused(false);
 			return true;
-		} else if (offsetEdit.isFocused() && this.offsetSuggestions.mouseClicked(mouseX, mouseY, delta)) {
+		} else if (offsetEdit.isFocused() && this.offsetSuggestions.mouseClicked(event)) {
 			soundLocationEdit.setFocused(false);
 			soundSourceEdit.setFocused(false);
 			volumeEdit.setFocused(false);
 			pitchEdit.setFocused(false);
 			minVolumeEdit.setFocused(false);
 			return true;
-		} else if (soundSourceEdit.isFocused() && this.soundSourceSuggestions.mouseClicked(mouseX, mouseY, delta)) {
+		} else if (soundSourceEdit.isFocused() && this.soundSourceSuggestions.mouseClicked(event)) {
 			soundLocationEdit.setFocused(false);
 			offsetEdit.setFocused(false);
 			volumeEdit.setFocused(false);
@@ -286,29 +292,30 @@ public abstract class AbstractSoundEmitterEditScreen extends Screen {
 			volumeEdit.setFocused(false);
 			pitchEdit.setFocused(false);
 			minVolumeEdit.setFocused(false);
-			return super.mouseClicked(mouseX, mouseY, delta);
+			return false;
 		}
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.drawCenteredString(this.font, SET_SOUND_LABEL, this.width / 2, 20, 16777215);
-		guiGraphics.drawString(this.font, SOUND_LABEL, this.width / 2 - 151, 40, 10526880, false);
-		guiGraphics.drawString(this.font, SOUND_SOURCE_LABEL, this.width / 2 + 1, 40, 10526880, false);
+	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
 
-		guiGraphics.drawString(this.font, OFFSET_LABEL, this.width / 2 - 150, 74, 10526880, false);
+		graphics.centeredText(this.font, SET_SOUND_LABEL, this.width / 2, 20, ARGB.opaque(16777215));
+		graphics.text(this.font, SOUND_LABEL, this.width / 2 - 151, 40, ARGB.opaque(16777215), false);
+		graphics.text(this.font, SOUND_SOURCE_LABEL, this.width / 2 + 1, 40, ARGB.opaque(16777215), false);
 
-		guiGraphics.drawString(this.font, VOLUME_LABEL, this.width / 2 + 1, 74, 10526880, false);
-		guiGraphics.drawString(this.font, PITCH_LABEL, this.width / 2 + 52, 74, 10526880, false);
-		guiGraphics.drawString(this.font, MIN_VOLUME_LABEL, this.width / 2 + 103, 74, 10526880, false);
+		graphics.text(this.font, OFFSET_LABEL, this.width / 2 - 150, 74, ARGB.opaque(16777215), false);
+
+		graphics.text(this.font, VOLUME_LABEL, this.width / 2 + 1, 74, ARGB.opaque(16777215), false);
+		graphics.text(this.font, PITCH_LABEL, this.width / 2 + 52, 74, ARGB.opaque(16777215), false);
+		graphics.text(this.font, MIN_VOLUME_LABEL, this.width / 2 + 103, 74, ARGB.opaque(16777215), false);
 
 
 		if (soundLocationEdit.isFocused())
-			this.soundSuggestions.render(guiGraphics, mouseX, mouseY);
+			this.soundSuggestions.extractRenderState(graphics, mouseX, mouseY);
 		if (offsetEdit.isFocused())
-			this.offsetSuggestions.render(guiGraphics, mouseX, mouseY);
+			this.offsetSuggestions.extractRenderState(graphics, mouseX, mouseY);
 		if (soundSourceEdit.isFocused())
-			this.soundSourceSuggestions.render(guiGraphics, mouseX, mouseY);
+			this.soundSourceSuggestions.extractRenderState(graphics, mouseX, mouseY);
 	}
 }

@@ -2,7 +2,6 @@ package com.mrbysco.soundmimicry.client.screen.components;
 
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.mrbysco.soundmimicry.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.CommandSuggestions;
@@ -49,7 +48,7 @@ public class SoundSuggestions extends CommandSuggestions {
 		}
 		previous = value;
 		List<String> soundLocations = new ArrayList<>(BuiltInRegistries.SOUND_EVENT.stream().map(sound ->
-				sound.getLocation().toString()).toList());
+				sound.location().toString()).toList());
 
 		if (!value.isEmpty())
 			soundLocations.removeIf(it -> !it.contains(value));

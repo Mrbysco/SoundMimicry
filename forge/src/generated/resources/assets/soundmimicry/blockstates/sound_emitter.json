@@ -2,33 +2,33 @@
   "variants": {
     "facing=east,powered=false": {
       "model": "soundmimicry:block/sound_emitter",
-      "y": 90
+      "y": 270
     },
     "facing=east,powered=true": {
-      "model": "soundmimicry:block/sound_emitter_on",
-      "y": 90
+      "model": "soundmimicry:block/sound_emitter_powered",
+      "y": 270
     },
     "facing=north,powered=false": {
-      "model": "soundmimicry:block/sound_emitter"
-    },
-    "facing=north,powered=true": {
-      "model": "soundmimicry:block/sound_emitter_on"
-    },
-    "facing=south,powered=false": {
       "model": "soundmimicry:block/sound_emitter",
       "y": 180
     },
-    "facing=south,powered=true": {
-      "model": "soundmimicry:block/sound_emitter_on",
+    "facing=north,powered=true": {
+      "model": "soundmimicry:block/sound_emitter_powered",
       "y": 180
+    },
+    "facing=south,powered=false": {
+      "model": "soundmimicry:block/sound_emitter"
+    },
+    "facing=south,powered=true": {
+      "model": "soundmimicry:block/sound_emitter_powered"
     },
     "facing=west,powered=false": {
       "model": "soundmimicry:block/sound_emitter",
-      "y": 270
+      "y": 90
     },
     "facing=west,powered=true": {
-      "model": "soundmimicry:block/sound_emitter_on",
-      "y": 270
+      "model": "soundmimicry:block/sound_emitter_powered",
+      "y": 90
     }
   }
 }

@@ -17,11 +17,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -132,34 +136,37 @@ public class SoundEmitterBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.loadAdditional(tag, registries);
-		this.soundLocation = tag.getString("soundLocation");
-		this.soundSource = tag.getString("soundSource");
-		this.offset = tag.getString("offset");
-		this.volume = tag.getString("volume");
-		this.pitch = tag.getString("pitch");
-		this.minVolume = tag.getString("minVolume");
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		this.soundLocation = input.getStringOr("soundLocation", "");
+		this.soundSource = input.getStringOr("soundSource", "");
+		this.offset = input.getStringOr("offset", "");
+		this.volume = input.getStringOr("volume", "");
+		this.pitch = input.getStringOr("pitch", "");
+		this.minVolume = input.getStringOr("minVolume", "");
 		this.constructCommand();
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.saveAdditional(tag, registries);
-		tag.putString("soundLocation", this.soundLocation);
-		tag.putString("soundSource", this.soundSource);
-		tag.putString("offset", this.offset);
-		tag.putString("volume", this.volume);
-		tag.putString("pitch", this.pitch);
-		tag.putString("minVolume", this.minVolume);
-
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		output.putString("soundLocation", this.soundLocation);
+		output.putString("soundSource", this.soundSource);
+		output.putString("offset", this.offset);
+		output.putString("volume", this.volume);
+		output.putString("pitch", this.pitch);
+		output.putString("minVolume", this.minVolume);
 	}
 
 	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider lookupProvider) {
-		CompoundTag nbt = new CompoundTag();
-		this.saveAdditional(nbt, lookupProvider);
-		return nbt;
+		CompoundTag tag = new CompoundTag();
+		try (ProblemReporter.ScopedCollector problemreporter$scopedcollector = new ProblemReporter.ScopedCollector(Constants.LOGGER)) {
+			TagValueOutput output = TagValueOutput.createWithContext(problemreporter$scopedcollector, lookupProvider);
+			this.saveAdditional(output);
+			tag.merge(output.buildResult());
+		}
+		return tag;
 	}
 
 	@Nullable

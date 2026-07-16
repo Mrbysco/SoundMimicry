@@ -1,43 +1,29 @@
 package com.mrbysco.soundmimicry.datagen.assets;
 
+import com.mrbysco.soundmimicry.Constants;
 import com.mrbysco.soundmimicry.registration.MimicryRegistry;
-import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
-import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.client.resources.model.sprite.Material;
-import net.minecraft.core.Direction;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class MimicryModelProvider extends FabricModelProvider {
-
-	public MimicryModelProvider(FabricPackOutput output) {
-		super(output);
+public class MimicryModelProvider extends ModelProvider {
+	public MimicryModelProvider(PackOutput output) {
+		super(output, Constants.MOD_ID);
 	}
 
 	@Override
-	public void generateBlockStateModels(BlockModelGenerators blockModels) {
+	protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
 		createEmitter(blockModels, MimicryRegistry.SOUND_EMITTER.get(), TexturedModel.ORIENTABLE);
 	}
-
-	@Override
-	public void generateItemModels(ItemModelGenerators itemModelGenerators) {
-		// Nope
-	}
-
-	public final PropertyDispatch<VariantMutator> ROTATION_HORIZONTAL_FACING_ALT = PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
-			.select(Direction.SOUTH, BlockModelGenerators.NOP)
-			.select(Direction.WEST, BlockModelGenerators.Y_ROT_90)
-			.select(Direction.NORTH, BlockModelGenerators.Y_ROT_180)
-			.select(Direction.EAST, BlockModelGenerators.Y_ROT_270);
 
 	public final void createEmitter(BlockModelGenerators blockModels, Block block, TexturedModel.Provider provider) {
 		Material poweredTexture = TextureMapping.getBlockTexture(block, "_front_powered");
@@ -62,7 +48,7 @@ public class MimicryModelProvider extends FabricModelProvider {
 
 		blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
 				.with(BlockModelGenerators.createBooleanModelDispatch(BlockStateProperties.POWERED, poweredModel, model))
-				.with(ROTATION_HORIZONTAL_FACING_ALT)
+				.with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING_ALT)
 		);
 	}
 }

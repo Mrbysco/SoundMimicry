@@ -22,13 +22,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class SoundEmitterBlock extends BaseEntityBlock {
 	public static final MapCodec<SoundEmitterBlock> CODEC = simpleCodec(SoundEmitterBlock::new);
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public SoundEmitterBlock(Properties properties) {
@@ -44,13 +45,13 @@ public class SoundEmitterBlock extends BaseEntityBlock {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (level.getBlockEntity(pos) instanceof SoundEmitterBlockEntity blockEntity) {
-			if (level.isClientSide) {
-				com.mrbysco.soundmimicry.client.screen.SoundEmitterEditScreen.openScreen(pos, level.dimension().location(),
+			if (level.isClientSide()) {
+				com.mrbysco.soundmimicry.client.screen.SoundEmitterEditScreen.openScreen(pos, level.dimension().identifier(),
 						blockEntity.soundLocation, blockEntity.soundSource, blockEntity.offset, blockEntity.volume, blockEntity.pitch,
 						blockEntity.minVolume);
 			}
 
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.SUCCESS;
 		}
 
 		return super.useWithoutItem(state, level, pos, player, hitResult);
@@ -63,7 +64,7 @@ public class SoundEmitterBlock extends BaseEntityBlock {
 
 	@Nullable
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		if (!level.isClientSide && state.getValue(POWERED)) {
+		if (!level.isClientSide() && state.getValue(POWERED)) {
 			return createTickerHelper(blockEntityType, MimicryRegistry.SOUND_EMITTER_ENTITY.get(), SoundEmitterBlockEntity::serverTick);
 		}
 		return null;
@@ -75,7 +76,7 @@ public class SoundEmitterBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
 		boolean flag = level.hasNeighborSignal(pos);
 		if (flag != state.getValue(POWERED)) {
 			if (flag) {

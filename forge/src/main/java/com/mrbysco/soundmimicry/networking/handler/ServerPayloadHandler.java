@@ -20,7 +20,7 @@ public class ServerPayloadHandler {
 	public void handleSoundData(final SetSoundDataPayload payload, final IPayloadContext context) {
 		context.enqueueWork(() -> {
 					if (context.player() instanceof ServerPlayer player) {
-						MinecraftServer server = player.getServer();
+						MinecraftServer server = player.level().getServer();
 						var dimensionKey = ResourceKey.create(Registries.DIMENSION, payload.dimension());
 						ServerLevel level = server.getLevel(dimensionKey);
 						CommonClass.handleSetSound(level, player, payload);

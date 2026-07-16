@@ -1,9 +1,8 @@
 {
-  "parent": "minecraft:block/orientable",
+  "parent": "minecraft:block/orientable_with_bottom",
   "textures": {
     "bottom": "soundmimicry:block/sound_emitter",
     "front": "soundmimicry:block/sound_emitter_front_powered",
-    "particle": "soundmimicry:block/sound_emitter",
     "side": "soundmimicry:block/sound_emitter",
     "top": "soundmimicry:block/sound_emitter"
   }

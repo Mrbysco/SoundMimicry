@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "soundmimicry:block/sound_emitter"
+  }
+}

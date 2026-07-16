@@ -11,16 +11,16 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 @Mod(Constants.MOD_ID)
 public class SoundMimicryNeoForge {
 
-    public SoundMimicryNeoForge(IEventBus eventBus) {
-        CommonClass.init();
+	public SoundMimicryNeoForge(IEventBus eventBus) {
+		CommonClass.init();
 
-        eventBus.addListener(this::buildContents);
-        eventBus.addListener(PacketHandler::setupPackets);
-    }
+		eventBus.addListener(this::buildContents);
+		eventBus.addListener(PacketHandler::setupPackets);
+	}
 
-    private void buildContents(final BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
-            event.accept(MimicryRegistry.SOUND_EMITTER.get());
-        }
-    }
+	private void buildContents(final BuildCreativeModeTabContentsEvent event) {
+		if (event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
+			event.accept(MimicryRegistry.SOUND_EMITTER.get());
+		}
+	}
 }
